@@ -5,126 +5,48 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>上溪镇随机选择村庄 - 测试版</title>
 <script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/RandomSelection.js"></script>
 <style type="text/css">
 body { background-color: #f5f5f5; }
 * { margin: 0; padding: 0; }
 * { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
 h1 { margin: 100px auto 40px; text-align: center; }
 #main { width: 100%; max-width: 800px; padding: 15px; margin: 0 auto 80px; }
-#czGrp { padding: 20px 15px; text-align: center; list-style: none; border: 2px solid #aaa; border-radius: 10px; }
-#czGrp li, #selectedGrp span { display: inline-block; margin: 10px; width: 70px; height: 60px; font-size: 14px; line-height: 58px; text-align: center; background: #ddd; border: 1px solid #aaa; border-radius: 10px; box-shadow: 0 0 14px #999; cursor: pointer; }
-#selectedGrp span { margin: 10px 12px 10px 5px; }
-#czGrp li.selected { background: none; opacity: .5; cursor: default; }
-#czGrp li.current { background: #ef6177; box-shadow: 0 0 14px #ef6177; border-color: #e9536a; color: #fff; cursor: default; opacity: 1; }
-#btnStart { display: block; margin: 30px auto 0; width: 100px; height: 100px; border-radius: 50%; color: #fff; font-size: 22px; font-weight: bold; background: #e9536a; outline: none; border: none; cursor: pointer; }
-#btnStart:hover { background: #ef6177; }
-#resultGrp { padding: 20px; margin: 60px auto 0; width: 100%; max-width: 980px; border: 2px solid #aaa; border-radius: 10px; font-size: 16px; line-height: 26px; }
-#selectedGrp span { color: #000; font-weight: bold; cursor: default; }
+.itemGrp { padding: 20px 15px; text-align: center; list-style: none; border: 2px solid #aaa; border-radius: 10px; }
+.itemGrp li, .result span { display: inline-block; margin: 10px; width: 70px; height: 60px; font-size: 14px; line-height: 58px; text-align: center; background: #ddd; border: 1px solid #aaa; border-radius: 10px; box-shadow: 0 0 14px #999; cursor: pointer; }
+.result span { margin: 10px 12px 10px 5px; }
+.itemGrp li.selected { background: none; opacity: .5; cursor: default; }
+.itemGrp li.current { background: #ef6177; box-shadow: 0 0 14px #ef6177; border-color: #e9536a; color: #fff; cursor: default; opacity: 1; }
+.btnStart { display: block; margin: 30px auto 0; width: 100px; height: 100px; border-radius: 50%; color: #fff; font-size: 22px; font-weight: bold; background: #e9536a; outline: none; border: none; cursor: pointer; }
+.btnStart:hover { background: #ef6177; }
+.result{ padding: 20px; margin: 60px auto 0; width: 100%; max-width: 980px; border: 2px solid #aaa; border-radius: 10px; font-size: 16px; line-height: 26px; }
+.result span { color: #000; font-weight: bold; cursor: default; }
 @media screen and (max-width: 767px) {
 h1 { margin-bottom: 25px; font-size: 32px; line-height: 46px; }
-#czGrp li, #selectedGrp span { margin: 8px; width: 65px; height: 65px; font-size: 12px; line-height: 63px; }
-#resultGrp { font-size: 14px; line-height: 24px; }
+.itemGrp li, .result span { margin: 8px; width: 65px; height: 65px; font-size: 12px; line-height: 63px; }
+.result{ font-size: 14px; line-height: 24px; }
 }
 </style>
 </head>
 <body>
-<div id="main">
-    <h1>市委组织部“全员微党课”大转盘 - 测试版</h1>
-    <ul id="czGrp">
+<div id="main" style="display:none">
+    <ul id="itemGrp" class="itemGrp">
     </ul>
     <button id="btnStart">开始</button>
-    <div id="resultGrp">选中的人：
+    <div id="resultGrp" class="result">选中的人：
         <div id="selectedGrp"></div>
     </div>
 </div>
+<div id="RandomSelection" style="width:600px; margin:60px;"></div>
 <script>
-var defaultCZArray = new Array("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32");
-var selectedCZArray = new Array();
-
-for(var i=0;i<defaultCZArray.length;i++){
-	$("#czGrp").append("<li>"+ defaultCZArray[i] +"</li>");
-}
-
-var ifStart = false;
-var StartRolling = null;
-var curIndex;
-var curCZGrp = $("#selectedGrp");
-$("#btnStart").click(function(){
-	if(!ifStart){
-		$("#czGrp li").removeClass('current');
-		$("#czGrp li").eq(curIndex).addClass('selected');
-		if(selectedCZArray.length<defaultCZArray.length){
-			ifStart = true;
-			$("#btnStart").html("停止");
-		
-			StartRolling = setInterval(function(){
-				for(var i=0;i>-1;i++){
-					curIndex = rnd(0,defaultCZArray.length-1);
-					if(ifRepeat(selectedCZArray,defaultCZArray[curIndex])){
-						$("#czGrp li").removeClass('current');
-						$("#czGrp li").eq(curIndex).addClass('current');
-						return true;
-					}
-				}
-			},60);	
-		}else{
-			alert("全员已被选中！");
-		}		
-	}else{
-		setTimeout(function(){
-			ifStart = false;
-			$("#btnStart").html("开始");
-			clearInterval(StartRolling);
-		
-			var newCZ = $('<span class="cz">');
-			newCZ.html(defaultCZArray[curIndex]);
-			
-			if(selectedCZArray.length!=0){
-				curCZGrp.append('、');
-			}
-			
-			selectedCZArray.push(defaultCZArray[curIndex]);
-			curCZGrp.append(newCZ);
-		},600);		
-	}
+/* 调用 AddCanvasTurntable 方法 */
+$(function () {
+    $("#RandomSelection").AddRandomSelection({
+		/********** 标签属性设置 **********/
+		sectorText: ["镇区片","赤中片","东朱片","毛店片","水岸社区"],
+		rotateTime: 2
+	});
 });
-
-$("body").on("click", "#czGrp li", function(){
-	if(ifStart){
-		ifStart = false;
-		$("#btnStart").html("开始");
-		clearInterval(StartRolling);
-	}else{
-		$("#czGrp li").eq(curIndex).addClass('selected');
-	}
-	curIndex = $(this).index();
-	$("#czGrp li").removeClass('current');
-	$("#czGrp li").eq(curIndex).addClass('current selected');
-	
-	var newCZ = $('<span class="cz">');
-	newCZ.html(defaultCZArray[curIndex]);
-	
-	if(selectedCZArray.length!=0){
-		curCZGrp.append('、');
-	}
-	
-	selectedCZArray.push(defaultCZArray[curIndex]);
-	curCZGrp.append(newCZ);
-	
-});
-
-function ifRepeat(array,str){
-	for(var i=0;i<array.length;i++){
-		if(array[i]==str){
-			return false;
-		}
-	}
-	return true;
-}
-	
-function rnd(n, m){
-	return Math.floor(Math.random()*(m-n+1)+n)
-}
 </script>
 </body>
 </html>
