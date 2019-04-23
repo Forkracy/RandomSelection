@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>上溪镇随机选择村庄 - 测试版</title>
+<title>随机选择</title>
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/RandomSelection.js"></script>
 <style type="text/css">
@@ -19,6 +19,7 @@ h1 { margin: 100px auto 40px; text-align: center; }
 .itemGrp li.current { background: #ef6177; box-shadow: 0 0 14px #ef6177; border-color: #e9536a; color: #fff; cursor: default; opacity: 1; }
 .btnStart { display: block; margin: 30px auto 0; width: 100px; height: 100px; border-radius: 50%; color: #fff; font-size: 22px; font-weight: bold; background: #e9536a; outline: none; border: none; cursor: pointer; }
 .btnStart:hover { background: #ef6177; }
+.btnStart.disable { opacity:.5;}
 .result{ padding: 20px; margin: 60px auto 0; width: 100%; max-width: 980px; border: 2px solid #aaa; border-radius: 10px; font-size: 16px; line-height: 26px; }
 .result span { color: #000; font-weight: bold; cursor: default; }
 @media screen and (max-width: 767px) {
@@ -29,22 +30,13 @@ h1 { margin-bottom: 25px; font-size: 32px; line-height: 46px; }
 </style>
 </head>
 <body>
-<div id="main" style="display:none">
-    <ul id="itemGrp" class="itemGrp">
-    </ul>
-    <button id="btnStart">开始</button>
-    <div id="resultGrp" class="result">选中的人：
-        <div id="selectedGrp"></div>
-    </div>
-</div>
-<div id="RandomSelection" style="width:600px; margin:60px;"></div>
+<div id="RandomSelection" style="width:600px; margin:60px auto;"></div>
 <script>
 /* 调用 AddCanvasTurntable 方法 */
 $(function () {
     $("#RandomSelection").AddRandomSelection({
-		/********** 标签属性设置 **********/
-		sectorText: ["镇区片","赤中片","东朱片","毛店片","水岸社区"],
-		rotateTime: 2
+		rollSpeed: 60,
+		rollTime: 30
 	});
 });
 </script>
