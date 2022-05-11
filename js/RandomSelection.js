@@ -29,10 +29,10 @@
 		var rollTime = settings.rollTime?settings.rollTime:30;
 		
 		//result 描述
-		var resultTitle = settings.resultTitle?settings.resultTitle:"当前已选中的结果如下：";
+		var resultTitle = settings.resultTitle?settings.resultTitle:"Chosen One(s)：";
 		
 		//全部选中之后的弹框内容
-		var alertText = settings.alertText?settings.alertText:"内容已全部被选中！";
+		var alertText = settings.alertText?settings.alertText:"All chosen already！";
 		
 		//ID 后缀
 		var idSuffix = Date.parse(new Date())/1000,
@@ -50,7 +50,7 @@
 			var itemGrp = $("<ul id='"+itemGrpID+"' class='itemGrp'>");
 			selectionWrapper.append(itemGrp);
 			
-			var btnStart = $("<button id='"+btnStartID+"' class='btnStart'>开始</button>");
+			var btnStart = $("<button id='"+btnStartID+"' class='btnStart'>Go</button>");
 			selectionWrapper.append(btnStart);
 			
 			var resultDiv = $("<div id='"+resultID+"' class='result'>");
