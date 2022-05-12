@@ -17,7 +17,7 @@
 		
 		//参与随机选择的数组
 		//var defaultArray = settings.defaultArray?settings.defaultArray:["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15"];
-		var defaultArray = settings.defaultArray?settings.defaultArray:["P1k", "AIFacotry", "inLogicWeTrust", "inUniverseWeTrust"];
+		var defaultArray = settings.defaultArray?settings.defaultArray:["01", "02", "03", "04", "05"];
 		
 		//已选中对象数组
 		var selectedArray = new Array();
